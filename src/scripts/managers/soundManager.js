@@ -2,6 +2,7 @@ const soundcloud = require('soundcloud-badge');
 const createPlayer = require('web-audio-player');
 const createAnalyser = require('web-audio-analyser');
 const average = require('analyser-frequency-average');
+const xhr = require('xhr');
 
 const AudioContext = window.AudioContext || window.webkitAudioContext;
 const audioContext = AudioContext ? new AudioContext() : null;
@@ -19,6 +20,8 @@ class SoundManager {
 		this.pause = false;
 		this.assets = './assets/';
 		this.source = 'mome.mp3';
+		this.minFreq = 350;
+		this.maxFreq = 10000;
 
 		this.initSound();
 		this.initGui();
@@ -49,13 +52,33 @@ class SoundManager {
 			this.player = new Audio();
 			this.player.crossOrigin = 'Anonymous';
 			this.player.addEventListener('canplay', () => {
-				this.audioUtil = createAnalyser(this.player, audioContext, { audible: true, stereo: false })
-				this.analyser = this.audioUtil.analyser;
+				// this.audioUtil = createAnalyser(this.player, audioContext, { audible: true, stereo: false })
+				// this.analyser = this.audioUtil.analyser;
 				this.player.playbackRate = 1.0;
+				this.sourceNode = audioContext.createMediaElementSource(this.player);
 				this.player.play();
+
+				// add low-pass
+				this.filter = audioContext.createBiquadFilter();
+				this.sourceNode.connect(this.filter);
+				this.filter.connect(audioContext.destination);
+				this.filter.type = 'lowpass';
+				this.filter.frequency.value = this.minFreq;
 			});
 			this.player.src = src;
 		});
+
+	}
+
+	handleKeydown() {
+
+		this.filter.frequency.value = this.maxFreq;
+
+	}
+
+	handleKeyup() {
+
+		this.filter.frequency.value = this.minFreq;
 
 	}
 

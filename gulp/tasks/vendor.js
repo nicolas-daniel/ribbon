@@ -7,7 +7,7 @@ var gulp = require('gulp'),
 
 gulp.task('vendor', function () {
 	return gulp.src(config.src)
-		.pipe(concat(config.outputName))
+		// .pipe(concat(config.outputName))
 		.pipe(gulpif(production, uglify()))
 		.pipe(gulp.dest(config.dest))
 });

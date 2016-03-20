@@ -42,7 +42,8 @@ module.exports = {
 			'./src/vendor/TweenMax.min.js',
 			'./src/vendor/Wagner.js',
 			'./src/vendor/Wagner.base.js',
-			'./src/vendor/dat.gui.js'
+			'./src/vendor/dat.gui.js',
+			'./src/vendor/fbo.js'
 		],
 		dest: dest + '/js/vendor',
 		outputName: 'vendor.js'
