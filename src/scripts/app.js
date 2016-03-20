@@ -23,7 +23,8 @@ class App {
 		this.mousemove = this.mousemove.bind(this);
 
 		// params
-		this.color = "#471E6A";
+		// this.color = "#471E6A";
+		this.color = "#090737";
 		this.wWidth = window.innerWidth;
 		this.wHeight = window.innerHeight;
 		this.cameraTarget = new THREE.Vector3(0,0,0);
@@ -89,6 +90,9 @@ class App {
 		this.scene.add( this.particles );
 
 		this.soundManager = new SoundManager();
+
+		this.floor.changeColor( this.color );
+        this.ribbon.changeColor( this.color );
 
 		this.update();
 		

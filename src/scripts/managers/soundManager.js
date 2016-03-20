@@ -44,7 +44,7 @@ class SoundManager {
 
 		soundcloud({
 			client_id: 'b95f61a90da961736c03f659c03cb0cc',
-			song: 'https://soundcloud.com/odesza/one-day-theyll-know-odesza',
+			song: 'https://soundcloud.com/owslaofficial/birdy-nam-nam-jaded-future',
 			dark: false,
 			getFonts: true
 		}, (err, src, data, div) => {
