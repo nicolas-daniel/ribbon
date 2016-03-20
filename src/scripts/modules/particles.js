@@ -7,8 +7,8 @@ class Sphere extends THREE.Object3D {
 		this.speed = 2;
 
 		this.particles = [];
-		this.nParticles = 100;
-		this.radius = 1;
+		this.nParticles = 200;
+		this.radius = 0.8;
 		this.startZ = -500;
 
 		let particleMat = new THREE.MeshBasicMaterial({color:0xffffff});

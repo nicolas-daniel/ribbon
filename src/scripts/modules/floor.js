@@ -7,7 +7,7 @@ class Floor extends THREE.Object3D {
 		super();
 
 		// geometry
-		this.geometry = new THREE.PlaneBufferGeometry( 5000, 2000 );
+		this.geometry = new THREE.PlaneBufferGeometry( 5000, 2000, 32, 32 );
 
 		// material
 		// this.material = new THREE.MeshBasicMaterial({ color:color });
@@ -22,7 +22,7 @@ class Floor extends THREE.Object3D {
 		// mesh
 		this.mesh = new THREE.Mesh( this.geometry, this.material );
 		
-		this.mesh.position.y = -400;
+		this.mesh.position.y = -500;
 		this.mesh.position.z = -1000;
 		this.mesh.rotation.x = -Math.PI/2;
 		
