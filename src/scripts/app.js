@@ -23,39 +23,20 @@ class App {
 		this.mousemove = this.mousemove.bind(this);
 
 		// params
-		this.backgroundColor = 0x471E6A;
+		this.color = "#471E6A";
 		this.wWidth = window.innerWidth;
 		this.wHeight = window.innerHeight;
-		this.useNoise = false;
-		this.useVignette = false;
-		this.useBloom = false;
-		this.autoRotate = false;
 		this.cameraTarget = new THREE.Vector3(0,0,0);
 		this.gui = window.gui = new dat.GUI();
 
-		// wagner passes
-		this.noisePass = new WAGNER.NoisePass();
-		this.bloomPass = new WAGNER.MultiPassBloomPass();
-		this.vignettePass = new WAGNER.VignettePass();
-
-		// noise pass
-		this.noisePass.params.amount = 0.05;
-		this.noisePass.params.speed = 0.05;
-
-		// vignette pass
-		this.vignettePass.params.amount = 1;
-
-		// bloom pass
-		this.bloomPass.params.strength = .5;
-        this.bloomPass.params.blurAmount = .1;
-        this.bloomPass.params.applyZoomBlur = !0;
-        this.bloomPass.params.zoomBlurStrength = .3;
-		
 		// init gui
-		this.wagnerGui = this.gui.addFolder('Wagner');
-		this.wagnerGui.add(this, 'useNoise');
-		this.wagnerGui.add(this, 'useVignette');
-		this.wagnerGui.add(this, 'useBloom');
+		let guiColor = window.gui.addColor(this, 'color');
+		guiColor.onChange((color) => {
+			this.renderer.setClearColor( color, 1 );
+        	this.scene.fog = new THREE.Fog( color, 0.1, 1000 );
+        	this.floor.changeColor( color );
+        	this.ribbon.changeColor( color );
+		});
 
 		this.init();
 		
@@ -70,12 +51,12 @@ class App {
 	init() {
 
 		this.scene = new THREE.Scene();
-		this.scene.fog = new THREE.Fog( this.backgroundColor, 0.1, 1000 );
+		this.scene.fog = new THREE.Fog( this.color, 0.1, 1000 );
 
 		this.renderer = new THREE.WebGLRenderer({ antialias:true, alpha:true });
-		this.renderer.setClearColor(this.backgroundColor, 1);
+		this.renderer.setClearColor(this.color, 1);
 		this.renderer.autoClearColor = true;
-		this.renderer.shadowMapEnabled = true;
+		this.renderer.shadowMap.enabled = true;
 		
 		this.camera = new THREE.PerspectiveCamera(45, this.wWidth/this.wHeight, 1, 4000);
 		this.camera.position.z = 500;
@@ -90,8 +71,6 @@ class App {
 
 		this.composer = new WAGNER.Composer( this.renderer );
 		this.composer.setSize( this.wWidth, this.wHeight );
-
-		// this.addLights();
 
 		// this.addControls();
 
@@ -114,18 +93,6 @@ class App {
 		this.update();
 		
 	}
-
-	addLights() {
-
-		let light = new THREE.DirectionalLight(0xffffff, 0.5);
-		light.position.set(300,300,300);
-		light.castShadow = true;
-		this.scene.add(light);
-		
-		let pointlight = new THREE.PointLight(0xffffff, 2, 2000);
-		this.scene.add(pointlight);
-
-    }
 
 	addControls() {
 
@@ -165,13 +132,6 @@ class App {
 		this.raycaster.setFromCamera( this.mouse, this.camera );
 		window.intersects = this.raycaster.intersectObject( this.plane );
 
-		// this.composer.reset();
-		// this.composer.render( this.scene, this.camera );
-		// if (this.useNoise) this.composer.pass( this.noisePass );
-		// if (this.useVignette) this.composer.pass( this.vignettePass );
-		// if (this.useBloom) this.composer.pass( this.bloomPass );
-		// this.composer.toScreen();
-
 		this.renderer.render( this.scene, this.camera );
 
 		this.rotateX += (this.mouse.y * 0.05 - this.rotateX) * 0.1;
@@ -189,29 +149,29 @@ class App {
 
 	onKeydown ( e ) {
 
-        if (e.keyCode === 32) this.accelerate();
+        if (e.keyCode === 32) this.decelerate();
 
     }
 
     onKeyup ( e ) {
 
-        if (e.keyCode === 32) this.decelerate();
+        if (e.keyCode === 32) this.accelerate();
         
     }
 
      accelerate() {
 
-        this.particles.handleKeydown();
-        this.ribbon.handleKeydown();
-        this.soundManager.handleKeydown();
+        this.particles.handleKeyup();
+        this.ribbon.handleKeyup();
+        this.soundManager.handleKeyup();
 
     }
 
     decelerate() {
 
-        this.particles.handleKeyup();
-        this.ribbon.handleKeyup();
-        this.soundManager.handleKeyup();
+        this.particles.handleKeydown();
+        this.ribbon.handleKeydown();
+        this.soundManager.handleKeydown();
 
     }
 

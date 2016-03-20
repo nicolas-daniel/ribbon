@@ -4,19 +4,23 @@ class Sphere extends THREE.Object3D {
 
 		super();
 
-		this.speed = 2;
+		this.speed = 10;
 
 		this.particles = [];
 		this.nParticles = 200;
 		this.radius = 0.8;
 		this.startZ = -500;
 
-		let particleMat = new THREE.MeshBasicMaterial({color:0xffffff});
-		let particleGeo = new THREE.CircleGeometry( this.radius, 16 ); 
-		let particle;
+		// geometry
+		this.geometry = new THREE.CircleGeometry( this.radius, 16 ); 
+		
+		// material
+		this.material = new THREE.MeshBasicMaterial({ color:0xffffff, transparent:true });
+		this.material.opacity = 0.8;
 
+		let particle;
 		for (let i=0; i<this.nParticles; ++i) {
-			particle = new THREE.Mesh( particleGeo, particleMat );
+			particle = new THREE.Mesh( this.geometry, this.material );
 			particle.position.x = Math.random() * 600 - 300;
 			particle.position.y = Math.random() * 400 - 200;
 			particle.position.z = Math.random() * 1000;
@@ -28,13 +32,13 @@ class Sphere extends THREE.Object3D {
 
 	handleKeydown() {
 
-		this.speed = 10;
+		this.speed = 2;
 
 	}
 
 	handleKeyup() {
 
-		this.speed = 2;
+		this.speed = 10;
 
 	}
 

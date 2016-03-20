@@ -63,7 +63,7 @@ class SoundManager {
 				this.sourceNode.connect(this.filter);
 				this.filter.connect(audioContext.destination);
 				this.filter.type = 'lowpass';
-				this.filter.frequency.value = this.minFreq;
+				this.filter.frequency.value = this.maxFreq;
 			});
 			this.player.src = src;
 		});
@@ -72,13 +72,13 @@ class SoundManager {
 
 	handleKeydown() {
 
-		this.filter.frequency.value = this.maxFreq;
+		this.filter.frequency.value = this.minFreq;
 
 	}
 
 	handleKeyup() {
 
-		this.filter.frequency.value = this.minFreq;
+		this.filter.frequency.value = this.maxFreq;
 
 	}
 
